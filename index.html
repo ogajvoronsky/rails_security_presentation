@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Rails Security</title>
+
+		<meta name="description" content="Rails Security">
+		<meta name="author" content="Vasyl Lasiak">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/night.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h2>Rails</h2>
+					<h3>Security</h3>
+				</section>
+
+				<section>
+					<h2>The main goals</h2>
+					<ul>
+						<li class="fragment grow highlight-current-blue">Common Vulnerabilities</li>
+						<li class="fragment grow highlight-current-blue">How to awoid them with Rails?</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Security depends on the people using the framework!</h3>
+					<p align="left">In order to prevent attacks, minimize their impact and remove points of attack, first of all, you have to fully understand the attack methods in order to find the correct countermeasures.</p>
+				</section>
+
+				<section>
+					<h2>SQL Injection</h2>
+					<p align="left"></p>
+					<pre><code>
+
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Cross Site Scripting(XSS)</h2>
+					<p align="left"></p>
+					<pre><code>
+
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Cross Site Request Forgery (CSRF)</h2>
+					<p align="left"></p>
+					<pre><code>
+
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Mass Assignment and Strong Parameters</h2>
+					<p align="left"></p>
+					<pre><code>
+
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Command Injection</h2>
+					<p align="left"></p>
+					<pre><code>
+
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Usefull links</h2>
+					<div style="text-align: left;">
+						<a href="https://www.owasp.org/index.php/Ruby_on_Rails_Cheatsheet" target="_blank">OWASP(Open Web Application Security Project) Cheatsheet</a>
+						<br />
+						<a href="http://guides.rubyonrails.org/security.html" target="_blank">RoR Security Guide</a>
+					</div>
+				</section>
+
+				<section>
+					<h2>Brakeman</h2>
+					<p align="left">Use brakeman, an open source code analysis tool for Rails applications, to identify many potential issues.</p>
+				</section>
+
+				<section>
+					<h3>Ruby on Rails Code Quality Gems</h3>
+					<ul>
+						<li><a href="https://github.com/railsbp/rails_best_practices" target="_blank">Rails best practices - Code metric tool</a></li>
+						<li><a href="https://github.com/bbatsov/rubocop" target="_blank">Rubocop - Static code analyzer</a></li>
+						<li><a href="https://github.com/troessner/reek" target="_blank">Reek - Code smell detector for Ruby</a></li>
+					</ul>
+				</section>
+
+				<section>
+					<img src="img/QA.jpg" width="85%" alt="Q&A" style="border: none" />
+					<h6 class="fragment">No questions? No answers!</h6>
+					<p>
+						<small>Created by Vasyl Lasiak / <a href="https://github.com/vlasiak" target="_blank">@vlasiak</a></small>
+					</p>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				slideNumber: true,
+				history: false,
+				center: true,
+				overview: true,
+				touch: true,
+				loop: false,
+				autoSlide: 0,
+
+				transition: 'zoom', // none/fade/slide/convex/concave/zoom
+				transitionSpeed: 'fast', // default/fast/slow
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+	</body>
+</html>
