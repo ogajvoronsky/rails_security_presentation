@@ -58,6 +58,68 @@
 				</section>
 
 				<section>
+					<section>
+						<h2>Command Injection</h2>
+						<p align="left">While the power of these commands is quite useful, extreme care should be taken when using them in a Rails based application. Usually, its just a bad idea.</p>
+						<h3>Example 1</h3>
+						<pre><code>
+def some_action
+  path = "#{Rails.root}/public/#{params[:user_path]}"
+  `ls #{path}`
+end
+						</code></pre>
+						<h3>Example 2</h3>
+						<pre><code>
+def some_action
+  str = params[:user_input]
+  eval(str)
+end
+						</code></pre>
+					</section>
+					<section>
+						<h3>Why is it dangerous and how to prevent?</h3>
+						<h3>Example 1</h3>
+						<pre><code>
+params[:user_path] => '; echo '' > ./config/database.yml'
+
+solution => Use 'system' instead of ``=> system("ls", path)
+						</code></pre>
+						<h3>Example 2</h3>
+						<pre><code>
+params[:user_path] => "`echo '' > ./config/database.yml`"
+
+solution => Validate input with RegExp, length, use params whitelist, etc...
+						</code></pre>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Mass Assignment</h2>
+						<p align="left">Although the major issue with Mass Assignment has been fixed by default in base Rails specifically when generating new projects, it still applies to older and upgraded projects so it is important to understand the issue and to ensure that only attributes that are intended to be modifiable are exposed.</p>
+						<p>What are the potential problems of the code below?</p>
+						<pre><code>
+def signup
+  @user = User.new(params[:user])
+end
+						</code></pre>
+					</section>
+					<section>
+						<h2>Solution</h2>
+						<p align="left">Use Strong Parameters.</p>
+						<pre><code>
+def create
+  @user = User.create(user_params)
+end
+
+def user_params
+  params.require(:user).permit(:name, :age, ...)
+end
+						</code></pre>
+					</section>
+				</section>
+
+				<section>
 					<h2>SQL Injection</h2>
 					<p align="left"></p>
 					<pre><code>
@@ -74,23 +136,7 @@
 				</section>
 
 				<section>
-					<h2>Cross Site Request Forgery (CSRF)</h2>
-					<p align="left"></p>
-					<pre><code>
-
-					</code></pre>
-				</section>
-
-				<section>
-					<h2>Mass Assignment and Strong Parameters</h2>
-					<p align="left"></p>
-					<pre><code>
-
-					</code></pre>
-				</section>
-
-				<section>
-					<h2>Command Injection</h2>
+					<h2>Cross Site Request Forgery(CSRF)</h2>
 					<p align="left"></p>
 					<pre><code>
 
