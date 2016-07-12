@@ -120,26 +120,108 @@ end
 				</section>
 
 				<section>
-					<h2>SQL Injection</h2>
-					<p align="left"></p>
-					<pre><code>
-
-					</code></pre>
+					<section>
+						<h2>SQL Injection</h2>
+						<p align="left">Ruby on Rails is often used with an ORM called ActiveRecord. Many use cases protect for SQL Injection out of the box. However, it is possible to write code that allows for SQL Injection.</p>
+						<p>Why it is dangerous?</p>
+						<pre><code>
+User.where("username = '#{params[:username]}' AND encrypted_password = '#{params[:password]}'")
+						</code></pre>
+					</section>
+					<section>
+						<p align="left">What if we inject this into input?</p>
+						<pre><code>
+Vasyl' OR 1=1)--
+						</code></pre>
+						<h3>Parameters sanitizing</h3>
+						<pre><code>
+ActiveRecord =>User.where("username = ? AND encrypted_password = ?", params[:username], params[:password])
+or
+ActiveRecord =>User.where(username: params[:username], encrypted_password: params[:password])
+						</code></pre>
+					</section>
 				</section>
 
 				<section>
-					<h2>Cross Site Scripting(XSS)</h2>
-					<p align="left"></p>
-					<pre><code>
+					<section>
+						<h2>Cross Site Scripting(XSS)</h2>
+						<p align="left">By default, in Rails 3.0 protection against XSS comes as the default behavior.</p>
+						<p>Let's look at the code below</p>
+						<pre><code>
+<%= raw @product.name %>   
+<%= @product.name.html_safe %>
+<%= content_tag @product.name %>
+						</code></pre>
+					</section>
+					<section>
+						<h3>Now try to inject some simple JS code</h3>
+						<pre><code>
+< script type="text/javascript"> alert("Your hard disk is corrupted."); < /script >
+or more private
+< script> document.write(document.cookie); < /script >
+						</code></pre>
+						<h3>Possible solutions</h3>
+						<pre><code>
+<%= strip_tags("some<<b>script>alert('hello')<</b>/script>") %>
+<%= html_escape '< img src=x onerror=prompt(1) >' %>
 
-					</code></pre>
+<%= sanitize '< img src=x onerror=prompt(1) >' %>
+<%= sanitize '< img src=x onerror=prompt(1) >', attributes: %w(src onerror) %>
+						</code></pre>
+					</section>
 				</section>
 
 				<section>
-					<h2>Cross Site Request Forgery(CSRF)</h2>
-					<p align="left"></p>
-					<pre><code>
+					<section>
+						<h2>Cross Site Request Forgery(CSRF)</h2>
+						<p align="left">Ruby on Rails has specific, built in support for CSRF tokens. Modern versions of Rails protect against CSRF attacks by default by including a token named authenticity_token within HTML responses. This token is also stored within the user’s session cookie - when a request is received by Rails it checks one against the other. If they do not match, an error is raised. To enable it, or ensure that it is enabled, find the base ApplicationController and look for a directive such as the following</p>
+						<pre><code>
+class ApplicationController < ActionController::Base
+  protect_from_forgery
+						</code></pre>
+						<p align="left">!! Rails does not provide CSRF protection for any HTTP GET request !!</p>
+						<a href="http://guides.rubyonrails.org/v3.2.9/security.html#cross-site-request-forgery-csrf">Example</a>
+					</section>
+					<section>
+						<h3>Bad link example</h3>
+						<pre><code>
+%a{href: "http://www.google.com/", onclick:"
+  var f = document.createElement('form');
+  var input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = '_method';
+  input.value = 'delete';
+  f.appendChild(input);
+  f.style.display = 'none';
+  this.parentNode.appendChild(f);
+  f.method = 'POST';
+  f.action = '/products/12';
+  f.submit();
+  return false;
+"}= 'Go to Google'
+						</code></pre>
+					</section>
+				</section>
 
+				<section>
+					<h2>Cross Origin Resource Sharing(CORS)</h2>
+					<p align="left">Occasionally, a need arises to share resources with another domain. For example, a file-upload function that sends data via an AJAX request to another domain.</p>
+					<p align="left">The receiving site should whitelist only those domains allowed to make such requests. Whitelist in Rails</p>
+					<pre><code>
+gem 'rack-cors', :require => 'rack/cors'
+
+module Sample
+  class Application < Rails::Application
+    config.middleware.use Rack::Cors do
+      allow do
+        origins 'someserver.example.com'
+        resource %r{/users/\d+.json},
+          :headers => ['Origin', 'Accept', 'Content-Type'],
+          :methods => [:post, :get]
+      end
+    end
+  end
+end
 					</code></pre>
 				</section>
 
